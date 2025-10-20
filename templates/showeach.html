@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Book Details - Library</title>
+    <style>
+        :root {
+            --bg1: #0f172a;
+            --bg2: #071430;
+            --muted: #9bb3c8;
+            --accent1: #8b5cf6;
+            --accent2: #06b6d4;
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+            background:
+                radial-gradient(800px 360px at 10% 20%, rgba(139, 92, 246, 0.08), transparent 12%),
+                radial-gradient(600px 260px at 95% 80%, rgba(6, 182, 212, 0.04), transparent 10%),
+                linear-gradient(180deg, var(--bg1), var(--bg2));
+            color: #e6eef8;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            width: 100%;
+            padding: 20px 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            transition: all 0.2s ease;
+        }
+
+        .profile-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #021124;
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        .username-text {
+            color: #cfe8ff;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            text-decoration: none;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            color: #021124;
+            font-size: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #cfe8ff;
+            font-size: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(6, 182, 212, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Book Detail Container */
+        .detail-page {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 40px 28px;
+        }
+
+        .detail-container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #cfe8ff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 32px;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent2);
+            gap: 12px;
+        }
+
+        /* Book Detail Card */
+        .book-detail {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: 0 12px 40px rgba(2, 6, 23, 0.6);
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 48px;
+        }
+
+        /* Book Cover Section */
+        .book-cover-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .book-cover {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cover-placeholder {
+            font-size: 48px;
+            font-weight: 800;
+            color: #021124;
+            letter-spacing: 2px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-buttons .btn-primary {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+            padding: 14px 20px;
+        }
+
+        /* Book Info Section */
+        .book-info {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .book-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .book-author {
+            font-size: 20px;
+            color: #cfe8ff;
+            font-weight: 600;
+        }
+
+        .book-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .meta-label {
+            font-size: 13px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 16px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .price-tag {
+            background: linear-gradient(90deg, var(--accent2), var(--accent1));
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #021124;
+            font-weight: 800;
+            font-size: 24px;
+            display: inline-block;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .category-badge {
+            background: rgba(6, 182, 212, 0.12);
+            color: #5eead4;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .book-description {
+            line-height: 1.7;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .description-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, var(--accent2), var(--accent1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .book-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .spec-label {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .spec-value {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .book-detail {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                padding: 30px;
+            }
+
+            .book-cover-section {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .book-specs {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .detail-page {
+                padding: 20px 16px;
+            }
+
+            .book-detail {
+                padding: 24px;
+            }
+
+            .book-title {
+                font-size: 28px;
+            }
+
+            .book-author {
+                font-size: 18px;
+            }
+
+            .navbar {
+                padding: 16px 16px;
+            }
+
+            .username-text {
+                display: none;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .book-title {
+                font-size: 24px;
+            }
+
+            .book-meta {
+                gap: 12px;
+            }
+
+            .price-tag {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'show' %}" class="brand-logo">Library</a>
+            <div class="nav-right">
+                <!-- book_update -->
+                {% if request.user.username %}
+                <div class="user-profile">
+                    <div class="profile-icon">{{request.user.username|slice:":1"}}</div>
+                    <span class="username-text">{{request.user.username}}</span>
+                </div>
+                <a href="{% url 'logout' %}" class="btn-primary">Logout</a>
+                {% else %}
+                <a href="{% url 'viewlogin' %}" class="btn-primary">Login</a>
+                {% endif %}
+                {% if request.user.is_superuser %}
+                <a href="{% url 'book_update' data.item.id %}" class="btn-primary">Edit Book</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="detail-page">
+        <div class="detail-container">
+            <a href="/" class="back-link">
+                ← Back to Library
+            </a>
+
+            <div class="book-detail">
+
+                <div class="book-cover-section">
+                    <div class="book-cover">
+                        {% if data.item.image %}
+                        <img src="{{data.item.image.url}}" alt="{{data.item.title}}" />
+                        {% else %}
+                        <div class="cover-placeholder">COV</div>
+                        {% endif %}
+                    </div>
+                    <div class="action-buttons">
+                        <a href="#" class="btn-primary">🛒 Add to Cart</a>
+                        <a href="#" class="btn-secondary">❤️ Add to Wishlist</a>
+                        <a href="#" class="btn-secondary">📖 Read Sample</a>
+                    </div>
+                </div>
+
+                <!-- Book Info Section -->
+                <div class="book-info">
+                    <div>
+                        <h1 class="book-title">{{data.item.title}}</h1>
+                        <p class="book-author">by {{data.item.author}}</p>
+                    </div>
+
+                    <div class="book-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Price</span>
+                            <span class="price-tag">₹{{data.item.price}}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Category</span>
+                            <span class="category-badge">{{data.item.category}}</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="description-title">About This Book</h3>
+                        <p class="book-description">
+                            {{data.item.description}}
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="description-title">Book Details</h3>
+                        <div class="book-specs">
+                            <div class="spec-item">
+                                <span class="spec-label">Format</span>
+
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Pages</span>
+
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Publisher</span>
+
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Language</span>
+
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">ISBN</span>
+                                <span class="spec-value">{{data.item.isbn|default:"978-0-123456-78-9"}}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Published</span>
+                                <span class="spec-value">{{data.item.writed}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

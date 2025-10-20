@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}Form Page{% endblock %}</title>
+
+    <style>
+        :root {
+            --bg-1: #071430;
+            --bg-2: #0f172a;
+            --card: #0f172a;
+            --muted: #9bb3c8;
+            --accent-start: #8b5cf6;
+            --accent-end: #06b6d4;
+            --glass: rgba(255, 255, 255, 0.04);
+            --radius-lg: 14px;
+            --radius-md: 10px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+        }
+
+        body {
+            background:
+                radial-gradient(900px 400px at 10% 20%, rgba(139, 92, 246, 0.10), transparent 12%),
+                radial-gradient(700px 300px at 95% 80%, rgba(6, 182, 212, 0.06), transparent 10%),
+                linear-gradient(180deg, var(--bg-1), var(--bg-2));
+            color: #e6eef8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            padding: 28px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: 0 14px 50px rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .brand {
+            width: 54px;
+            height: 54px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #021124;
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.08);
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            color: #fff;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .form-wrap {
+            margin-top: 8px;
+        }
+
+        .input,
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.00));
+            color: #e6eef8;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: box-shadow .18s ease, border-color .18s ease, transform .06s ease;
+        }
+
+        .input:focus,
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: rgba(139, 92, 246, 0.95);
+            box-shadow: 0 8px 28px rgba(99, 102, 241, 0.12), 0 0 0 4px rgba(99, 102, 241, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+            color: #021124;
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.12);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .errorlist {
+            color: #ffb4b4;
+            margin: 6px 0 0 0;
+            font-size: 13px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .side {
+            padding: 20px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cover {
+            width: 100%;
+            height: 220px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width:980px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 12px;
+            }
+
+            .side {
+                order: 2;
+                margin-top: 14px;
+            }
+
+            .panel {
+                order: 1;
+            }
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+    <div class="container">
+        <main class="panel" aria-label="main form panel">
+            <div class="panel-header">
+                <div class="brand">BK</div>
+                <div>
+                    <p class="title">{% block page_title %}Update Book{% endblock %}</p>
+                    <p class="subtitle">{% block page_subtitle %}Use the form below to edit book details.{% endblock %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-wrap">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+
+                    <!-- Show current image below file input -->
+                    {% if book.image %}
+                    <p>Current Cover:</p>
+                    <img src="{{ book.image.url }}" alt="Book Cover"
+                        style="width:150px; border-radius:6px; margin-bottom:10px;">
+                    {% endif %}
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save</button>
+                        <div class="hint">Fields are validated server-side. Required fields are marked.</div>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <aside class="side" aria-label="context panel">
+            <div class="cover">
+                {% if book.image %}
+                <img src="{{ book.image.url }}" alt="Book Preview">
+                {% else %}
+                Preview
+                {% endif %}
+            </div>
+
+            <div style="color:var(--muted);font-size:13px;width:100%;">
+                <div
+                    style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px dashed rgba(255,255,255,0.03);">
+                    <strong style="color:#fff">Status</strong><span>Draft</span>
+                </div>
+                <div
+                    style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px dashed rgba(255,255,255,0.03);">
+                    <strong style="color:#fff">Last Edited</strong><span>—</span>
+                </div>
+            </div>
+
+            <div class="hint" style="margin-top:12px;">
+                Use widget attrs in your forms (class="input", class="full") to control appearance and layout inside
+                this generic renderer.
+            </div>
+        </aside>
+    </div>
+</body>
+
+</html>

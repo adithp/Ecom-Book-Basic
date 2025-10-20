@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Book Cards - Library</title>
+    <style>
+        :root {
+            --bg1: #0f172a;
+            --bg2: #071430;
+            --card: #0f172a;
+            --muted: #9bb3c8;
+            --accent1: #8b5cf6;
+            --accent2: #06b6d4;
+            --glass: rgba(255, 255, 255, 0.03);
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+            background:
+                radial-gradient(800px 360px at 10% 20%, rgba(139, 92, 246, 0.08), transparent 12%),
+                radial-gradient(600px 260px at 95% 80%, rgba(6, 182, 212, 0.04), transparent 10%),
+                linear-gradient(180deg, var(--bg1), var(--bg2));
+            color: #e6eef8;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            width: 100%;
+            padding: 20px 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            transition: all 0.2s ease;
+        }
+
+        .user-profile:hover {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .profile-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #021124;
+            font-weight: 800;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
+            text-transform: uppercase;
+        }
+
+        .username-text {
+            color: #cfe8ff;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            text-decoration: none;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            color: #021124;
+            font-size: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Page Layout */
+        .page {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0 28px 40px 28px;
+        }
+
+        .content-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+
+        /* Category Section */
+        .category-section {
+            width: 100%;
+        }
+
+        .category-header {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, var(--accent2), var(--accent1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding-bottom: 8px;
+        }
+
+        /* Card Grid */
+        .wrap {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.5);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(139, 92, 246, 0.25), 0 0 24px rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Card Image Holder */
+        .card-img-holder {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-holder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .cover {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 28px;
+            color: #021124;
+            letter-spacing: 1px;
+        }
+
+        /* Card Content */
+        .title {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 4px 0 0 0;
+            color: #fff;
+            line-height: 1.3;
+            min-height: 44px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        .author {
+            color: #cfe8ff;
+            font-weight: 600;
+            font-size: 13px;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .price {
+            background: linear-gradient(90deg, var(--accent2), var(--accent1));
+            padding: 5px 12px;
+            border-radius: 8px;
+            color: #021124;
+            font-weight: 800;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+        }
+
+        .cat {
+            background: rgba(6, 182, 212, 0.12);
+            color: #5eead4;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .small {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+
+            .content-container,
+            .nav-container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .page {
+                padding: 0 20px 40px 20px;
+            }
+
+            .wrap {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 16px 20px;
+            }
+
+            .brand-logo {
+                font-size: 20px;
+            }
+
+            .nav-right {
+                gap: 12px;
+            }
+
+            .user-profile {
+                padding: 6px 12px;
+                gap: 8px;
+            }
+
+            .profile-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .username-text {
+                font-size: 14px;
+            }
+
+            .btn-primary {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .category-header {
+                font-size: 20px;
+            }
+
+            .content-container {
+                gap: 36px;
+            }
+
+            .wrap {
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page {
+                padding: 0 12px 30px 12px;
+            }
+
+            .navbar {
+                padding: 12px 12px;
+            }
+
+            .brand-logo {
+                font-size: 18px;
+            }
+
+            .wrap {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+
+            .card {
+                padding: 12px;
+            }
+
+            .title {
+                font-size: 15px;
+                min-height: 40px;
+            }
+
+            .category-header {
+                font-size: 18px;
+                margin-bottom: 16px;
+            }
+
+            .content-container {
+                gap: 28px;
+            }
+
+            .username-text {
+                display: none;
+            }
+
+            .user-profile {
+                padding: 6px;
+            }
+
+            .cover {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand-logo">Library</div>
+            <div class="nav-right">
+                {% if request.user.username %}
+                <div class="user-profile">
+                    <div class="profile-icon">{{request.user.username|slice:":1"}}</div>
+                    <span class="username-text">{{request.user.username}}</span>
+                </div>
+                <a href="{% url 'logout' %}" class="btn-primary">Logout</a>
+                {% else %}
+                <a href="{% url 'viewlogin' %}" class="btn-primary">Login</a>
+                {% endif %}
+                {% if request.user.is_superuser %}
+                <a href="{% url 'book_create' %}" class="btn-primary">Add Book</a>
+                <a href="{% url 'author_create' %}" class="btn-primary">Add Author</a>
+                <a href="{% url 'add_category' %}" class="btn-primary">Add Category</a>
+
+
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="page">
+        <div class="content-container">
+            {% for key, values in data.items %}
+            <section class="category-section">
+                <h2 class="category-header">{{ key }}</h2>
+                <div class="wrap">
+                    {% for j in values %}
+                    <a href="{% url 'listeach' j.id %}" style="text-decoration: none;">
+                        <article class="card">
+                            <div class="card-img-holder">
+                                {% if j.image %}
+                                <img src="{{j.image.url}}" alt="{{j.title}}" />
+                                {% else %}
+                                <div class="cover">COV</div>
+                                {% endif %}
+                            </div>
+                            <h3 class="title">{{ j.title }}</h3>
+                            <div class="meta">
+                                <span class="author">{{ j.author }}</span>
+                                <span class="price">₹{{ j.price }}</span>
+                                <span class="cat">{{ j.category }}</span>
+                            </div>
+                            <div class="small">📚 Hardcover · 320 pages</div>
+                        </article>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
