@@ -262,7 +262,7 @@
         .author {
             color: #cfe8ff;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 15px;
             flex: 1;
             min-width: 80px;
         }
@@ -293,6 +293,14 @@
             font-size: 12px;
             color: var(--muted);
             margin-top: 4px;
+        }
+
+        .wishlist:hover {
+            transform: scale(1.1);
+        }
+
+        .wishlist {
+            text-decoration: none;
         }
 
         /* Responsive Design */
@@ -419,21 +427,24 @@
             <div class="brand-logo">Library</div>
             <div class="nav-right">
                 {% if request.user.username %}
+
                 <div class="user-profile">
+                    <a style="font-size: 28px;" class="wishlist" href="{% url 'wishlist_show' %}">🛒
+                    </a>
+                    <a href="{% url 'borrow_books' %}" style="font-size: 28px;" class="wishlist">📚</a>
                     <div class="profile-icon">{{request.user.username|slice:":1"}}</div>
                     <span class="username-text">{{request.user.username}}</span>
                 </div>
                 <a href="{% url 'logout' %}" class="btn-primary">Logout</a>
+
                 {% else %}
                 <a href="{% url 'viewlogin' %}" class="btn-primary">Login</a>
+                <a href="{% url 'register' %}" class="btn-primary">Signup</a>
                 {% endif %}
                 {% if request.user.is_superuser %}
-                <a href="{% url 'book_create' %}" class="btn-primary">Add Book</a>
-                <a href="{% url 'author_create' %}" class="btn-primary">Add Author</a>
-                <a href="{% url 'add_category' %}" class="btn-primary">Add Category</a>
-
-
+                <a href="{% url 'admin_panel' %}" class="btn-primary">Admin</a>
                 {% endif %}
+
             </div>
         </div>
     </nav>
@@ -460,8 +471,12 @@
                                 <span class="author">{{ j.author }}</span>
                                 <span class="price">₹{{ j.price }}</span>
                                 <span class="cat">{{ j.category }}</span>
+                                {% if j.available %}
+                                <span class="cat">Available</span>
+                                {% else %}
+                                <span class="cat" style="color: red;">Not Available</span>
+                                {% endif %}
                             </div>
-                            <div class="small">📚 Hardcover · 320 pages</div>
                         </article>
                     </a>
                     {% endfor %}

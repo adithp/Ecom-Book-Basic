@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Dashboard – Library</title>
+    <style>
+        :root {
+            --bg1: #0f172a;
+            --bg2: #071430;
+            --muted: #9bb3c8;
+            --accent1: #8b5cf6;
+            --accent2: #06b6d4;
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+            background:
+                radial-gradient(800px 360px at 10% 20%, rgba(139, 92, 246, 0.08), transparent 12%),
+                radial-gradient(600px 260px at 95% 80%, rgba(6, 182, 212, 0.04), transparent 10%),
+                linear-gradient(180deg, var(--bg1), var(--bg2));
+            color: #e6eef8;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 24px 32px 18px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .brand-logo {
+            color: #fff;
+            font-weight: 700;
+            font-size: 30px;
+            text-decoration: none;
+            letter-spacing: 0.6px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.07);
+            padding: 7px 20px;
+            border-radius: 28px;
+            box-shadow: 0 2px 14px rgba(139, 92, 246, 0.08);
+        }
+
+        .admin-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        .admin-name {
+            font-weight: 700;
+            color: #cfe8ff;
+            font-size: 16px;
+        }
+
+        .btn-logout {
+            padding: 8px 22px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            color: #021124;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: .5px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+            margin-left: 12px;
+            text-transform: uppercase;
+            transition: 0.18s;
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+        }
+
+        /* Dashboard Container */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 36px auto 0 auto;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+            border-radius: var(--radius);
+            padding: 34px;
+            box-shadow: 0 10px 44px rgba(2, 6, 23, 0.18);
+        }
+
+        .admin-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 36px;
+            background: linear-gradient(90deg, var(--accent2), var(--accent1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Action Buttons Row */
+        .action-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 10px 36px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            color: #021124;
+            font-size: 17px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.22);
+            letter-spacing: .6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.22s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+        }
+
+        /* Section styles */
+        .section-list {
+            margin-top: 28px;
+        }
+
+        .section-header {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, var(--accent2), var(--accent1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-content {
+            padding: 24px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 2px 14px rgba(139, 92, 246, 0.08);
+            font-size: 17px;
+            color: var(--muted);
+        }
+
+        .btn-primary {
+            text-decoration: none;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            color: #021124;
+            font-size: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+
+        @media(max-width:1000px) {
+            .container {
+                padding: 18px;
+            }
+
+            .navbar {
+                padding: 18px;
+            }
+        }
+
+        @media(max-width:600px) {
+            .admin-title {
+                font-size: 19px;
+            }
+
+            .container {
+                margin: 16px auto 0 auto;
+            }
+
+            .btn-action {
+                font-size: 15px;
+                padding: 8px 15px;
+            }
+        }
+
+        @media(max-width:420px) {
+            .container {
+                margin: 0;
+                padding: 0;
+            }
+
+            .navbar {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="brand-logo">Library</a>
+        <div class="admin-profile">
+            <span class="admin-avatar">{{ request.user.username|slice:":1" }}</span>
+            <span class="admin-name">{{ request.user.username }}</span>
+            <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="admin-title">Admin Dashboard</div>
+        <div class="action-row">
+            {% if request.user.is_superuser %}
+            <a href="{% url 'book_create' %}" class="btn-primary">Add Book</a>
+            <a href="{% url 'author_create' %}" class="btn-primary">Add Author</a>
+            <a href="{% url 'add_category' %}" class="btn-primary">Add Category</a>
+
+
+            {% endif %}
+        </div>
+
+        <div class="section-list">
+            <div class="section-header">Quick Actions</div>
+            <div class="section-content">
+                Use the buttons above to add new books, create authors, or manage categories.<br>
+                All additions will appear instantly in your library for users.
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
