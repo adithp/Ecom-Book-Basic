@@ -73,7 +73,7 @@ def book_create(req):
         
         form = BookForm()
         if req.method == 'POST':
-            form = BookForm(req.POST)
+            form = BookForm(req.POST,req.FILES)
             if form.is_valid():
                 form.save()
                 return redirect('show')

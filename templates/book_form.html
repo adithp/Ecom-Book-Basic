@@ -227,8 +227,8 @@
             </div>
 
             <div class="form-wrap">
-                <!-- Minimal form internals as requested: CSRF, {{ form }}, and submit button only -->
-                <form method="POST" action="">
+
+                <form method="POST" action="" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form }}
                     <div class="form-actions">
