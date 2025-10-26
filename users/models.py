@@ -30,6 +30,10 @@ class Book(models.Model):
     available = models.BooleanField(default=True,null=False)
     
     
+    def __str__(self):
+        return self.title
+    
+    
     
     
     
